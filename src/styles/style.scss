@@ -1,0 +1,17 @@
+@use "base/_variables.scss" as v;
+@use "blocks/header.scss";
+@use "blocks/main.scss";
+@use "blocks/burger-menu.scss";
+@use "blocks/input-field.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  background-color: v.$base-color;
+  display: grid;
+  grid-template-rows: auto 93%;
+  height: 100vh;
+}

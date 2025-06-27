@@ -1,0 +1,7 @@
+@use "../base/variables" as v;
+
+.btn-default {
+  background-color: v.$contacts-color;
+  padding: 10px 15px 10px 15px;
+  border-radius: 6px;
+}

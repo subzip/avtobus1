@@ -1,0 +1,17 @@
+@use "./header-buttons.scss";
+@use "./contacts-book.scss";
+@use "./button-default.scss";
+@use "../base/variables" as v;
+
+.header {
+  display: flex;
+  background-color: v.$header-color;
+  padding: 17px 0 17px 0;
+  align-items: center;
+  justify-content: space-around;
+
+  &__btns {
+    display: flex;
+    gap: 15px;
+  }
+}

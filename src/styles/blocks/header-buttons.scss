@@ -1,0 +1,17 @@
+@use "../base/variables" as v;
+
+.add-contact {
+  background-color: v.$add-contact-color;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 15px 10px 15px;
+  border-radius: 6px;
+
+  &__text {
+    color: v.$header-color;
+  }
+
+  &__img {
+  }
+}

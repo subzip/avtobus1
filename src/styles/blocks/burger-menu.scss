@@ -38,6 +38,9 @@
 
   &__contacts-wrapper {
     margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 
   &__btns-wrapper {

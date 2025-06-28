@@ -2,19 +2,26 @@ import { ElementCreator } from "../../../core/utils/element-creator";
 import button from "../blue-button/blue-button";
 import closeButtonSVG from "../../../assets/img/menu/close-button.svg";
 import { InputField } from "../input-field/input-field";
+import { deleteButton } from "../dekete-contact/delete-contact";
+import { StorageService } from "../../../core/services/storage.service";
+import { isGroupNameUnique } from "../../../core/utils/validators";
 
 export class MenuBurger {
+  private contactsStorage;
+
   private menuBurger;
   private titleWrapper;
   private title;
   private closeBtn;
   private inputWrapper;
-  private inputs: Array<HTMLInputElement>;
+  private inputs: Array<HTMLElement>;
   private btnsWrapper;
   private addbtn;
   private savebtn;
 
   constructor() {
+    this.contactsStorage = StorageService.loadData();
+
     this.menuBurger = document.createElement("aside");
     this.menuBurger.setAttribute("id", "burger-menu");
     this.menuBurger.setAttribute("class", "burger-menu burger-menu-closed");
@@ -49,11 +56,37 @@ export class MenuBurger {
       this.addContact();
     });
     this.savebtn = button("Сохранить", "burger-menu__btn-save");
+    this.savebtn.addEventListener("click", () => this.saveContactsGroup());
 
     this.titleWrapper.appendChild(this.title);
     this.titleWrapper.appendChild(this.closeBtn);
     this.btnsWrapper.appendChild(this.addbtn);
     this.btnsWrapper.appendChild(this.savebtn);
+
+    this.contactsStorage.groups.map((el) => {
+      const wrapper = ElementCreator.createElement(
+        "div",
+        "burger-menu__input-wrapper"
+      );
+      const input = new InputField();
+      const deleteBtn = deleteButton();
+      input.setKey(el.id);
+      input.getInputField().value = el.name;
+
+      deleteBtn.addEventListener("click", () => {
+        this.inputWrapper.removeChild(wrapper);
+        const temp = this.inputs.filter((el) => el !== wrapper);
+        this.inputs = temp;
+        this.fillContacts();
+      });
+
+      wrapper.appendChild(input.getInputField());
+      wrapper.appendChild(deleteBtn);
+
+      this.inputs.push(wrapper);
+
+      this.fillContacts();
+    });
 
     this.menuBurger.appendChild(this.titleWrapper);
     this.menuBurger.appendChild(this.inputWrapper);
@@ -61,8 +94,25 @@ export class MenuBurger {
   }
 
   public addContact() {
+    const wrapper = ElementCreator.createElement(
+      "div",
+      "burger-menu__input-wrapper"
+    );
     const input = new InputField();
-    this.inputs.push(input.getInputField());
+    const deleteBtn = deleteButton();
+    input.setKey(crypto.randomUUID());
+
+    deleteBtn.addEventListener("click", () => {
+      this.inputWrapper.removeChild(wrapper);
+      const temp = this.inputs.filter((el) => el !== wrapper);
+      this.inputs = temp;
+      this.fillContacts();
+    });
+
+    wrapper.appendChild(input.getInputField());
+    wrapper.appendChild(deleteBtn);
+
+    this.inputs.push(wrapper);
 
     this.fillContacts();
   }
@@ -80,49 +130,26 @@ export class MenuBurger {
     this.inputs = [];
   }
 
+  public saveContactsGroup() {
+    this.inputs.map((el) => {
+      const group = {
+        id: el.getElementsByTagName("input")[0].id,
+        name: el.getElementsByTagName("input")[0].value,
+      };
+
+      if (isGroupNameUnique(group.name, this.contactsStorage.groups)) {
+        //delete if id is exist
+        StorageService.saveData({
+          contacts: this.contactsStorage.contacts,
+          groups: [...this.contactsStorage.groups, group],
+        });
+      } else {
+        //el.getElementsByTagName("input")[0] red warning
+      }
+    });
+  }
+
   public getMenu() {
     return this.menuBurger;
   }
 }
-
-// const menuBurger = document.createElement("aside");
-// menuBurger.setAttribute("id", "burger-menu");
-// menuBurger.setAttribute("class", "burger-menu burger-menu-closed");
-
-// const titleWrapper = ElementCreator.createElement(
-//   "div",
-//   "burger-menu__title-wrapper"
-// );
-// const title = ElementCreator.createElement("span", "burger-menu__title");
-// const closeBtn = ElementCreator.createElement(
-//   "img",
-//   "burger-menu__btn-close"
-// ) as HTMLImageElement;
-
-// closeBtn.src = closeButtonSVG;
-// title.innerHTML = "Группы контактов";
-
-// const inputWrapper = ElementCreator.createElement(
-//   "div",
-//   "burger-menu__contacts-wrapper"
-// );
-// const input = new InputField();
-// inputWrapper.appendChild(input.getInputField());
-
-// const btnsWrapper = ElementCreator.createElement(
-//   "div",
-//   "burger-menu__btns-wrapper"
-// );
-// const addbtn = button("Добавить", "burger-menu__btn-add");
-// const savebtn = button("Сохранить", "burger-menu__btn-save");
-
-// titleWrapper.appendChild(title);
-// titleWrapper.appendChild(closeBtn);
-// btnsWrapper.appendChild(addbtn);
-// btnsWrapper.appendChild(savebtn);
-
-// menuBurger.appendChild(titleWrapper);
-// menuBurger.appendChild(inputWrapper);
-// menuBurger.appendChild(btnsWrapper);
-
-// export { menuBurger };

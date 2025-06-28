@@ -24,6 +24,15 @@ export class StorageService {
     }
   }
 
+  static deleteGroup(id: string) {
+    const storage = this.loadData();
+    const newGroups = storage.groups.filter((el) => el.id !== id);
+
+    storage.groups = newGroups;
+
+    this.saveData(storage);
+  }
+
   static clearData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }

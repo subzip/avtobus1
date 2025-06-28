@@ -35,7 +35,7 @@ export class MenuBurger {
       "img",
       "burger-menu__btn-close"
     ) as HTMLImageElement;
-    this.closeBtn.addEventListener("click", () => this.clearContacts());
+    this.closeBtn.addEventListener("click", () => this.closeContacts());
 
     this.closeBtn.src = closeButtonSVG;
     this.title.innerHTML = "Группы контактов";
@@ -63,6 +63,17 @@ export class MenuBurger {
     this.btnsWrapper.appendChild(this.addbtn);
     this.btnsWrapper.appendChild(this.savebtn);
 
+    this.fillStorage();
+
+    this.menuBurger.appendChild(this.titleWrapper);
+    this.menuBurger.appendChild(this.inputWrapper);
+    this.menuBurger.appendChild(this.btnsWrapper);
+  }
+
+  public fillStorage() {
+    this.clearContacts();
+    this.contactsStorage = StorageService.loadData();
+
     this.contactsStorage.groups.map((el) => {
       const wrapper = ElementCreator.createElement(
         "div",
@@ -74,10 +85,11 @@ export class MenuBurger {
       input.getInputField().value = el.name;
 
       deleteBtn.addEventListener("click", () => {
-        this.inputWrapper.removeChild(wrapper);
-        const temp = this.inputs.filter((el) => el !== wrapper);
-        this.inputs = temp;
-        this.fillContacts();
+        StorageService.deleteGroup(el.id);
+        // this.inputWrapper.removeChild(wrapper);
+        // const temp = this.inputs.filter((el) => el !== wrapper);
+        // this.inputs = temp;
+        this.fillStorage();
       });
 
       wrapper.appendChild(input.getInputField());
@@ -87,10 +99,6 @@ export class MenuBurger {
 
       this.fillContacts();
     });
-
-    this.menuBurger.appendChild(this.titleWrapper);
-    this.menuBurger.appendChild(this.inputWrapper);
-    this.menuBurger.appendChild(this.btnsWrapper);
   }
 
   public addContact() {
@@ -103,6 +111,7 @@ export class MenuBurger {
     input.setKey(crypto.randomUUID());
 
     deleteBtn.addEventListener("click", () => {
+      //delete wrapper -> input from localStorage
       this.inputWrapper.removeChild(wrapper);
       const temp = this.inputs.filter((el) => el !== wrapper);
       this.inputs = temp;
@@ -130,7 +139,17 @@ export class MenuBurger {
     this.inputs = [];
   }
 
+  closeContacts() {
+    this.menuBurger.removeAttribute("class");
+    this.menuBurger.setAttribute("class", "burger-menu burger-menu-closed");
+    this.fillStorage();
+  }
+
   public saveContactsGroup() {
+    const storageTemp = {
+      contacts: this.contactsStorage.contacts,
+      groups: this.contactsStorage.groups,
+    };
     this.inputs.map((el) => {
       const group = {
         id: el.getElementsByTagName("input")[0].id,
@@ -139,14 +158,13 @@ export class MenuBurger {
 
       if (isGroupNameUnique(group.name, this.contactsStorage.groups)) {
         //delete if id is exist
-        StorageService.saveData({
-          contacts: this.contactsStorage.contacts,
-          groups: [...this.contactsStorage.groups, group],
-        });
+        storageTemp.groups = [...storageTemp.groups, group];
       } else {
         //el.getElementsByTagName("input")[0] red warning
       }
     });
+
+    StorageService.saveData(storageTemp);
   }
 
   public getMenu() {

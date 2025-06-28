@@ -4,4 +4,11 @@
   background-color: v.$contacts-color;
   padding: 10px 15px 10px 15px;
   border-radius: 6px;
+  color: v.$header-color;
+}
+
+.btn-default:hover {
+  background-color: v.$btn-hover-color;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }

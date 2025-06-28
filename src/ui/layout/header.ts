@@ -21,6 +21,11 @@ export const Header = () => {
   const toggleMenu = () => {
     //const overlay = document.getElementById("app-overlay")!;
     const sidebar = document.getElementById("burger-menu")!;
+    if (sidebar.classList.contains("burger-menu-opened")) {
+      isOpen = true;
+    } else {
+      isOpen = false;
+    }
     console.log(sidebar);
     isOpen = !isOpen;
     sidebar.classList.toggle("burger-menu-opened", isOpen);
@@ -31,7 +36,7 @@ export const Header = () => {
       if (isOpen) {
         document.body.style.overflow = "hidden";
       } else {
-        document.body.style.overflow = "auto";
+        document.body.style.overflow = "hidden";
       }
     });
   };

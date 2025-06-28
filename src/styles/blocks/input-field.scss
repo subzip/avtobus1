@@ -6,3 +6,13 @@
   padding: 12px 20px 12px 10px;
   border: none;
 }
+
+.input-field:focus {
+  box-shadow: 0px 0px 5px 0px rgba(0, 91, 254, 0.4);
+  border: 1px solid rgba(0, 91, 254, 1) !important;
+}
+
+.input-field:hover {
+  border: 1px solid;
+  border-color: rgba(0, 91, 254, 1);
+}

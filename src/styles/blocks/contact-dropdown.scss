@@ -1,0 +1,64 @@
+@use "../base/variables" as v;
+
+.contacts-list__dropdown {
+  height: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-top: 70px;
+  min-width: 1200px;
+  background-color: v.$header-color;
+  padding: 20px 25px 20px 25px;
+  border-radius: 6px;
+  &-contacts-wrapper {
+  }
+
+  &-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 15px 0;
+  }
+  &-logo {
+    transform: rotate(180deg);
+    //transition: all 0.2s ease;
+  }
+
+  &-contacts-wrapper {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 15px 0 15px 0;
+  }
+
+  &-contacts__contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: v.$header-color;
+    border-top: 1px solid v.$add-group-bg;
+  }
+
+  &-contacts__contact-number-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  &-contacts__contact-number-btns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.dropdown-opened {
+  transform: rotate(0deg);
+  //transition: all 0.2s ease;
+}
+
+.dropdown-visible {
+  overflow: visible;
+  height: fit-content;
+  transition: 0.2s all ease;
+}

@@ -1,0 +1,131 @@
+@use "../base/variables" as v;
+
+.add-contact-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 350px;
+  z-index: 10;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
+  background: v.$header-color;
+  display: grid;
+  padding: 15px 0px 15px 0px;
+  grid-template-rows: auto 80% 10%;
+  &-closed {
+    transform: translateX(-100%);
+  }
+
+  &-opened {
+    transform: translateX(0);
+  }
+
+  &__title {
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  &__title-wrapper {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid v.$input-bg-color;
+    padding: 10px 25px 25px 30px;
+    justify-content: space-between;
+  }
+
+  &__contacts-wrapper {
+    margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 300px;
+  }
+
+  &__input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    input {
+      width: 250px;
+    }
+  }
+
+  &__btns-wrapper {
+    display: flex;
+    height: fit-content;
+    justify-content: end;
+    gap: 20px;
+    margin-right: 20px;
+  }
+
+  &__btn-add {
+    background-color: v.$header-color;
+    color: v.$contacts-color;
+  }
+
+  &__btn-add:hover {
+    background-color: v.$add-group-bg;
+    color: v.$contacts-color;
+  }
+
+  &__btn-save {
+    color: v.$header-color;
+  }
+
+  &__btn-close {
+    cursor: pointer;
+  }
+
+  &__btn-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    background-blend-mode: multiply;
+  }
+
+  &__delete-contact {
+    border: 2px solid v.$input-bg-color;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+
+  &__select {
+    border: none;
+    padding: 10px 0 10px 0;
+    text-decoration: none;
+  }
+
+  &__select:hover {
+    border: none;
+    padding: 10px 0 10px 0;
+  }
+
+  &__select:focus {
+    border: none;
+    padding: 10px 0 10px 0;
+  }
+}
+
+.app-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.app-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+}
